@@ -1,0 +1,35 @@
+# Device inventory for network config backups.
+#
+# Copy this file to devices.yaml and fill in real device details.
+# devices.yaml is your actual inventory and should NOT be committed
+# (add it to .gitignore once it contains real hostnames/IPs).
+#
+# Credentials are NOT stored here — reference environment variable
+# names instead, and load the actual values from .env at runtime.
+#
+# device_type follows Netmiko's naming convention:
+#   https://github.com/ktbyers/netmiko#supported-ssh-device-types
+#
+# Note on Meraki: Meraki devices are typically cloud-managed via the
+# Dashboard API rather than direct SSH, so a "meraki" entry here is a
+# placeholder for future API-based backup support, not a live Netmiko
+# SSH driver like cisco_ios.
+
+devices:
+  - hostname: core-switch-01
+    ip: 192.168.1.1
+    device_type: cisco_ios
+    username: ${NET_USERNAME}
+    password: ${NET_PASSWORD}
+
+  - hostname: branch-router-01
+    ip: 192.168.1.2
+    device_type: cisco_ios
+    username: ${NET_USERNAME}
+    password: ${NET_PASSWORD}
+
+  - hostname: office-ap-meraki-01
+    ip: 192.168.1.10
+    device_type: meraki
+    username: ${NET_USERNAME}
+    password: ${NET_PASSWORD}

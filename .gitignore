@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Network Config Backup Automation — project-specific
+backups/*
+!backups/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Real device inventory (keep the .example template only)
+config/devices.yaml
+
