@@ -17,6 +17,7 @@ that's device_connector's job. It only decides *which* devices to visit
 and *what to do* with the result (write to disk, count, report).
 """
 
+import argparse
 import logging
 import sys
 from datetime import datetime
@@ -142,6 +143,23 @@ def print_summary(results: dict) -> None:
     print("=" * 50)
 
 
+def parse_args() -> argparse.Namespace:
+    """Parse CLI arguments for the backup run."""
+    project_root = Path(__file__).resolve().parent.parent
+    default_devices_path = project_root / "config" / "devices.yaml"
+
+    parser = argparse.ArgumentParser(
+        description="Back up the running config of every device in a device inventory file."
+    )
+    parser.add_argument(
+        "--devices",
+        type=Path,
+        default=default_devices_path,
+        help=f"Path to the device inventory YAML file (default: {default_devices_path}).",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
     # Same application-level logging setup pattern as device_connector.py:
     # log to both console and a file under logs/, so an unattended/
@@ -159,11 +177,13 @@ if __name__ == "__main__":
         ],
     )
 
-    devices_path = project_root / "config" / "devices.yaml"
+    args = parse_args()
+    devices_path = args.devices
     if not devices_path.exists():
         logger.error(
-            "config/devices.yaml not found. Copy config/devices.yaml.example "
-            "to config/devices.yaml and fill in your real device details."
+            "%s not found. Copy config/devices.yaml.example to config/devices.yaml "
+            "and fill in your real device details.",
+            devices_path,
         )
         sys.exit(1)
 
